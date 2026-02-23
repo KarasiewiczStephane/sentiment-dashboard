@@ -16,6 +16,7 @@ data/raw/
 *.csv
 *.parquet
 !data/sample/
+!data/sample/*.csv
 
 # Models
 *.pkl
