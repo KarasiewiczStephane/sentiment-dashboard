@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sentiment Analysis Report - {{ report_date }}</title>
+    <style>
+        body { font-family: 'Helvetica', sans-serif; margin: 40px; color: #333; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { color: #34495e; margin-top: 30px; }
+        .metric-card { display: inline-block; width: 200px; padding: 20px; margin: 10px;
+                       background: #f8f9fa; border-radius: 8px; text-align: center; }
+        .metric-value { font-size: 36px; font-weight: bold; color: #3498db; }
+        .metric-label { font-size: 14px; color: #7f8c8d; }
+        .positive { color: #27ae60; }
+        .negative { color: #e74c3c; }
+        .neutral { color: #95a5a6; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #3498db; color: white; }
+        .chart-container { margin: 20px 0; text-align: center; }
+        .chart-container img { max-width: 100%; height: auto; }
+        .summary-box { background: #ecf0f1; padding: 20px; border-radius: 8px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Sentiment Analysis Weekly Report</h1>
+    <p><strong>Report Period:</strong> {{ start_date }} - {{ end_date }}</p>
+    <p><strong>Generated:</strong> {{ report_date }}</p>
+
+    <h2>Key Metrics</h2>
+    <div class="metric-card">
+        <div class="metric-value">{{ total_analyzed }}</div>
+        <div class="metric-label">Total Analyzed</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value {% if avg_sentiment > 0.1 %}positive{% elif avg_sentiment < -0.1 %}negative{% else %}neutral{% endif %}">
+            {{ "%.2f"|format(avg_sentiment) }}
+        </div>
+        <div class="metric-label">Avg Sentiment Score</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value positive">{{ "%.1f%%"|format(positive_ratio * 100) }}</div>
+        <div class="metric-label">Positive Rate</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value negative">{{ "%.1f%%"|format(negative_ratio * 100) }}</div>
+        <div class="metric-label">Negative Rate</div>
+    </div>
+
+    {% if sentiment_pie_chart %}
+    <h2>Sentiment Distribution</h2>
+    <div class="chart-container">
+        <img src="data:image/png;base64,{{ sentiment_pie_chart }}" alt="Sentiment Distribution">
+    </div>
+    {% endif %}
+
+    {% if positive_topics %}
+    <h2>Top Topics</h2>
+    <h3 class="positive">Most Positive Topics</h3>
+    <table>
+        <tr><th>Topic</th><th>Positive Ratio</th><th>Mentions</th></tr>
+        {% for topic in positive_topics %}
+        <tr><td>{{ topic.label }}</td><td>{{ "%.1f%%"|format(topic.positive_ratio * 100) }}</td><td>{{ topic.count }}</td></tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if negative_topics %}
+    <h3 class="negative">Most Negative Topics</h3>
+    <table>
+        <tr><th>Topic</th><th>Negative Ratio</th><th>Mentions</th></tr>
+        {% for topic in negative_topics %}
+        <tr><td>{{ topic.label }}</td><td>{{ "%.1f%%"|format(topic.negative_ratio * 100) }}</td><td>{{ topic.count }}</td></tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    {% if trending_entities %}
+    <h2>Trending Entities</h2>
+    <div class="summary-box">
+        {% for entity in trending_entities %}
+        <p><strong>{{ entity.entity }}</strong> ({{ entity.type }}):
+           <span class="{% if entity.direction == 'improving' %}positive{% else %}negative{% endif %}">
+               {{ entity.direction }} ({{ "%.2f"|format(entity.sentiment_change) }})
+           </span>
+        </p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if trend_chart %}
+    <h2>Trend Analysis</h2>
+    <div class="chart-container">
+        <img src="data:image/png;base64,{{ trend_chart }}" alt="Sentiment Trend">
+    </div>
+    {% endif %}
+
+    {% if trend_summary %}
+    <p>{{ trend_summary }}</p>
+    {% endif %}
+
+    {% if anomalies %}
+    <h2>Anomalies Detected</h2>
+    <table>
+        <tr><th>Date</th><th>Type</th><th>Z-Score</th></tr>
+        {% for anomaly in anomalies %}
+        <tr><td>{{ anomaly.period }}</td><td>{{ anomaly.anomaly_type }}</td><td>{{ "%.2f"|format(anomaly.z_score) }}</td></tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No significant anomalies detected during this period.</p>
+    {% endif %}
+
+    <footer style="margin-top: 50px; color: #7f8c8d; font-size: 12px;">
+        Sentiment Analysis Dashboard | {{ report_date }}
+    </footer>
+</body>
+</html>
