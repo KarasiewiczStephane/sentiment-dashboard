@@ -1,0 +1,50 @@
+# Core ML
+transformers>=4.36
+torch>=2.1
+datasets>=2.16
+
+# Topic modeling
+bertopic>=0.16
+hdbscan>=0.8.33
+sentence-transformers>=2.2
+
+# NLP
+spacy>=3.7
+vaderSentiment>=3.3
+textblob>=0.17
+langdetect>=1.0.9
+emoji>=2.10
+
+# Database
+duckdb>=0.9
+
+# Dashboard
+dash>=2.14
+dash-bootstrap-components>=1.5
+plotly>=5.18
+
+# API
+fastapi>=0.109
+uvicorn>=0.27
+httpx>=0.26
+
+# Report generation
+jinja2>=3.1
+weasyprint>=60
+kaleido>=0.2
+
+# Data processing
+pyyaml>=6.0
+pandas>=2.1
+numpy>=1.26
+scikit-learn>=1.4
+scipy>=1.12
+
+# Environment
+python-dotenv>=1.0
+
+# Dev
+pytest>=7.0
+pytest-cov>=4.0
+ruff>=0.1
+pre-commit>=3.0
