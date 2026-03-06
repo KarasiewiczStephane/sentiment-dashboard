@@ -74,8 +74,11 @@ def update_trends(n_intervals: int, window: int) -> tuple:
 
     df = load_sentiment_data()
 
-    if df.empty or "created_at" not in df.columns:
+    if df.empty or "created_at" not in df.columns or df["created_at"].isna().all():
         empty_fig = go.Figure()
+        empty_fig.update_layout(
+            annotations=[{"text": "No timestamp data available", "showarrow": False}]
+        )
         return empty_fig, empty_fig
 
     detector = TrendDetector(window_size=window)

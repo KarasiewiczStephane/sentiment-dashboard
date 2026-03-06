@@ -1,6 +1,7 @@
 """Entities page with per-entity sentiment and trending entities."""
 
 import logging
+from functools import lru_cache
 
 import dash
 import dash_bootstrap_components as dbc
@@ -53,6 +54,13 @@ layout = dbc.Container(
 )
 
 
+@lru_cache(maxsize=1)
+def _get_entity_analyzer():
+    from src.models.entity_analyzer import EntityAnalyzer
+
+    return EntityAnalyzer()
+
+
 @callback(
     [
         Output("entity-mentions", "figure"),
@@ -79,9 +87,7 @@ def update_entities(n_intervals: int) -> tuple:
         return empty_fig, [], []
 
     try:
-        from src.models.entity_analyzer import EntityAnalyzer
-
-        analyzer = EntityAnalyzer()
+        analyzer = _get_entity_analyzer()
 
         sentiments = [
             {"sentiment": s, "confidence": c if c else 0.5}

@@ -19,11 +19,15 @@ data/raw/
 !data/sample/*.csv
 
 # Models
+models/
 *.pkl
 *.joblib
 *.pt
 *.h5
 *.onnx
+
+# Database
+*.duckdb
 
 # IDE
 .vscode/

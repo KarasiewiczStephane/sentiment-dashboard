@@ -38,7 +38,7 @@ def create_app() -> Dash:
                 color="primary",
                 dark=True,
             ),
-            dcc.Interval(id="interval-component", interval=30 * 1000, n_intervals=0),
+            dcc.Interval(id="interval-component", interval=300 * 1000, n_intervals=0),
             dcc.Store(id="data-store"),
             dash.page_container,
         ],

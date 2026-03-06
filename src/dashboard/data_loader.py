@@ -2,6 +2,7 @@
 
 import logging
 from datetime import datetime
+from functools import lru_cache
 from typing import Optional
 
 import duckdb
@@ -59,8 +60,9 @@ def load_sentiment_data(
     return df
 
 
+@lru_cache(maxsize=1)
 def load_topic_model(model_path: str = "models/bertopic") -> Optional[object]:
-    """Load the BERTopic model from disk.
+    """Load the BERTopic model from disk (cached after first load).
 
     Args:
         model_path: Path to the saved BERTopic model.
@@ -83,7 +85,21 @@ def load_benchmark_results() -> dict:
     Returns:
         Dict with comparison_df and agreement_matrix keys.
     """
+    from pathlib import Path
+
+    bench_dir = Path("data/benchmarks")
+    comparison_path = bench_dir / "comparison.csv"
+    agreement_path = bench_dir / "agreement.csv"
+
+    comparison_df = pd.DataFrame()
+    agreement_matrix = pd.DataFrame()
+
+    if comparison_path.exists():
+        comparison_df = pd.read_csv(comparison_path)
+    if agreement_path.exists():
+        agreement_matrix = pd.read_csv(agreement_path, index_col=0)
+
     return {
-        "comparison_df": pd.DataFrame(),
-        "agreement_matrix": pd.DataFrame(),
+        "comparison_df": comparison_df,
+        "agreement_matrix": agreement_matrix,
     }

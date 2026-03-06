@@ -74,6 +74,9 @@ class TrendDetector:
             )
             .reset_index()
         )
+        period_scores["sentiment_score"] = period_scores["sentiment_score"].astype(
+            float
+        )
 
         min_periods = max(1, self.min_samples // self.window_size)
         period_scores["rolling_mean"] = (
@@ -138,6 +141,7 @@ class TrendDetector:
             )
             .reset_index()
         )
+        daily_scores["score"] = daily_scores["score"].astype(float)
 
         if len(daily_scores) < lookback_days:
             return {"trend": "insufficient_data", "slope": 0, "p_value": 1.0}

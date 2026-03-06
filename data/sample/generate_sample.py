@@ -23,7 +23,6 @@ def generate_sample(
         df.groupby("sentiment")
         .apply(
             lambda x: x.sample(min(per_class, len(x)), random_state=42),
-            include_groups=False,
         )
         .reset_index(drop=True)
     )
