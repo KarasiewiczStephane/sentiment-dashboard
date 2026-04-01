@@ -1,6 +1,6 @@
 # Sentiment Analysis Dashboard
 
-Real-time sentiment monitoring with fine-tuned RoBERTa, BERTopic topic modeling, and interactive Plotly Dash visualization.
+> Real-time sentiment monitoring with fine-tuned RoBERTa, BERTopic topic modeling, and interactive Plotly Dash visualization.
 
 [![CI](https://github.com/KarasiewiczStephane/sentiment-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/KarasiewiczStephane/sentiment-dashboard/actions)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
@@ -174,6 +174,11 @@ make test       # Run all tests with coverage
 make lint       # Check linting with ruff
 make lint-fix   # Auto-fix lint issues
 ```
+
+
+## Author
+
+**Stéphane Karasiewicz** — [skarazdata.com](https://skarazdata.com) | [LinkedIn](https://www.linkedin.com/in/stephane-karasiewicz/)
 
 ## License
 
